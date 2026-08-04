@@ -103,3 +103,26 @@ body {
         margin-top: 20px;
     }
 }
+.dashboard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.dashboard-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 11px 18px;
+    border-radius: 9px;
+    background: #dc2626;
+    color: #ffffff;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.dashboard-link:hover {
+    background: #b91c1c;
+}

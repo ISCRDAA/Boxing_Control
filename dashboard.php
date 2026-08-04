@@ -97,11 +97,37 @@ $usuario = usuarioActual();
                 ) ?>
             </h2>
 
-            <p>
-                El inicio de sesión funciona correctamente.
-                En el siguiente paso construiremos el módulo para
-                registrar, listar y editar alumnos.
-            </p>
+              <p>
+                Desde este panel podrás administrar alumnos,
+                pagos, asistencias y planeaciones.
+             </p>
+
+            <div class="dashboard-actions">
+
+             <a
+                class="dashboard-link"
+                href="<?= BASE_URL ?>/alumnos/listar.php"
+                >
+                Gestionar alumnos
+            </a>
+
+            <a
+             class="dashboard-link"
+             href="<?= BASE_URL ?>/pagos/listar.php"
+            >
+                 Gestionar pagos
+            </a>
+            <a
+             class="dashboard-link"
+             href="<?= BASE_URL ?>/asistencias/listar.php"
+            >
+                Registrar asistencias
+            </a>
+
+
+
+            </div>
+
 
         </section>
 
