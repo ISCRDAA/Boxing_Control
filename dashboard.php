@@ -124,6 +124,12 @@ $usuario = usuarioActual();
                 Registrar asistencias
             </a>
 
+            <a
+             class="dashboard-link"
+             href="<?= BASE_URL ?>/ejercicios/listar.php"
+            >
+                Catálogo de ejercicios
+            </a>
 
 
             </div>
