@@ -236,13 +236,13 @@ if (!empty($alumno['proximo_pago'])) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        content="width=device-width, initial-scale=1.0">
 
     <title>
         Expediente de alumno | Gym Box
@@ -250,13 +250,11 @@ if (!empty($alumno['proximo_pago'])) {
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/dashboard.css"
-    >
+        href="<?= BASE_URL ?>/css/dashboard.css">
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/alumnos.css"
-    >
+        href="<?= BASE_URL ?>/css/alumnos.css">
 </head>
 
 <body>
@@ -270,8 +268,7 @@ if (!empty($alumno['proximo_pago'])) {
 
         <a
             class="btn-secondary"
-            href="<?= BASE_URL ?>/alumnos/listar.php"
-        >
+            href="<?= BASE_URL ?>/alumnos/listar.php">
             Volver a alumnos
         </a>
 
@@ -313,7 +310,7 @@ if (!empty($alumno['proximo_pago'])) {
                         <?= htmlspecialchars(
                             strtoupper(
                                 mb_substr($alumno['nombres'], 0, 1)
-                                . mb_substr($alumno['apellidos'], 0, 1)
+                                    . mb_substr($alumno['apellidos'], 0, 1)
                             ),
                             ENT_QUOTES,
                             'UTF-8'
@@ -332,8 +329,8 @@ if (!empty($alumno['proximo_pago'])) {
                         <h2>
                             <?= htmlspecialchars(
                                 $alumno['nombres']
-                                . ' '
-                                . $alumno['apellidos'],
+                                    . ' '
+                                    . $alumno['apellidos'],
                                 ENT_QUOTES,
                                 'UTF-8'
                             ) ?>
@@ -377,110 +374,107 @@ if (!empty($alumno['proximo_pago'])) {
 
                     <?php if ($alumno['estado'] === 'activo'): ?>
 
-                    <a
-                     class="btn-success"
-                    href="<?= BASE_URL ?>/pagos/crear.php?alumno_id=<?= (int) $alumno['id'] ?>"
-                  >
-                     Registrar pago
-                    </a>
+                        <a
+                            class="btn-success"
+                            href="<?= BASE_URL ?>/pagos/crear.php?alumno_id=<?= (int) $alumno['id'] ?>">
+                            Registrar pago
+                        </a>
 
                     <?php endif; ?>
 
                     <a
                         class="btn-primary"
-                        href="<?= BASE_URL ?>/alumnos/editar.php?id=<?= $alumno['id'] ?>"
-                    >
+                        href="<?= BASE_URL ?>/alumnos/editar.php?id=<?= $alumno['id'] ?>">
                         Editar alumno
                     </a>
                     <?php if (
-    $alumno['estado'] === 'activo'
-    && !$asistenciaHoy
-): ?>
+                        $alumno['estado'] === 'activo'
+                        && !$asistenciaHoy
+                    ): ?>
 
-    <form
-        action="<?= BASE_URL ?>/api/asistencias/registrar.php"
-        method="POST"
-    >
+                        <form
+                            action="<?= BASE_URL ?>/api/asistencias/registrar.php"
+                            method="POST">
 
-        <input
-            type="hidden"
-            name="csrf_token"
-            value="<?= htmlspecialchars(
-                $_SESSION['csrf_token'],
-                ENT_QUOTES,
-                'UTF-8'
-            ) ?>"
-        >
+                            <input
+                                type="hidden"
+                                name="csrf_token"
+                                value="<?= htmlspecialchars(
+                                            $_SESSION['csrf_token'],
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        ) ?>">
 
-        <input
-            type="hidden"
-            name="alumno_id"
-            value="<?= (int) $alumno['id'] ?>"
-        >
+                            <input
+                                type="hidden"
+                                name="alumno_id"
+                                value="<?= (int) $alumno['id'] ?>">
 
-        <input
-            type="hidden"
-            name="origen"
-            value="perfil"
-        >
+                            <input
+                                type="hidden"
+                                name="origen"
+                                value="perfil">
 
-        <button
-            class="btn-attendance-profile"
-            type="submit"
-        >
-            Registrar asistencia
-        </button>
+                            <button
+                                class="btn-attendance-profile"
+                                type="submit">
+                                Registrar asistencia
+                            </button>
 
-    </form>
+                        </form>
 
-<?php elseif ($asistenciaHoy): ?>
+                    <?php elseif ($asistenciaHoy): ?>
 
-    <span class="attendance-profile-status">
-        Presente hoy a las
-        <?= date(
-            'H:i',
-            strtotime($asistenciaHoy['hora_llegada'])
-        ) ?>
-    </span>
+                        <span class="attendance-profile-status">
+                            Presente hoy a las
+                            <?= date(
+                                'H:i',
+                                strtotime($asistenciaHoy['hora_llegada'])
+                            ) ?>
+                        </span>
 
-<?php endif; ?>
+                    <?php endif; ?>
+                    <?php if ($alumno['estado'] === 'activo'): ?>
+
+                        <a
+                            class="btn-primary"
+                            href="<?= BASE_URL ?>/planeaciones/crear.php?alumno_id=<?= (int) $alumno['id'] ?>">
+                            Nueva planeación
+                        </a>
+
+                    <?php endif; ?>
 
 
 
                     <form
                         action="<?= BASE_URL ?>/api/alumnos/cambiar_estado.php"
                         method="POST"
-                        onsubmit="return confirm('¿Confirmas el cambio de estado del alumno?');"
-                    >
+                        onsubmit="return confirm('¿Confirmas el cambio de estado del alumno?');">
 
                         <input
                             type="hidden"
                             name="csrf_token"
                             value="<?= htmlspecialchars(
-                                $_SESSION['csrf_token'],
-                                ENT_QUOTES,
-                                'UTF-8'
-                            ) ?>"
-                        >
+                                        $_SESSION['csrf_token'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>">
 
                         <input
                             type="hidden"
                             name="id"
-                            value="<?= (int) $alumno['id'] ?>"
-                        >
+                            value="<?= (int) $alumno['id'] ?>">
 
                         <input
                             type="hidden"
                             name="origen"
-                            value="ver"
-                        >
+                            value="ver">
 
                         <button
                             class="<?= $alumno['estado'] === 'activo'
-                                ? 'btn-danger'
-                                : 'btn-success' ?>"
-                            type="submit"
-                        >
+                                        ? 'btn-danger'
+                                        : 'btn-success' ?>"
+                            type="submit">
                             <?= $alumno['estado'] === 'activo'
                                 ? 'Desactivar'
                                 : 'Activar' ?>
@@ -528,7 +522,7 @@ if (!empty($alumno['proximo_pago'])) {
                         <dd>
                             <?= htmlspecialchars(
                                 $alumno['telefono']
-                                ?: 'No registrado',
+                                    ?: 'No registrado',
                                 ENT_QUOTES,
                                 'UTF-8'
                             ) ?>
@@ -560,7 +554,7 @@ if (!empty($alumno['proximo_pago'])) {
                         <dd>
                             <?= htmlspecialchars(
                                 $alumno['contacto_emergencia']
-                                ?: 'No registrado',
+                                    ?: 'No registrado',
                                 ENT_QUOTES,
                                 'UTF-8'
                             ) ?>
@@ -572,7 +566,7 @@ if (!empty($alumno['proximo_pago'])) {
                         <dd>
                             <?= htmlspecialchars(
                                 $alumno['telefono_emergencia']
-                                ?: 'No registrado',
+                                    ?: 'No registrado',
                                 ENT_QUOTES,
                                 'UTF-8'
                             ) ?>
@@ -604,9 +598,9 @@ if (!empty($alumno['proximo_pago'])) {
                         <dt>Cuota</dt>
                         <dd>
                             $<?= number_format(
-                                (float) $alumno['cuota'],
-                                2
-                            ) ?>
+                                    (float) $alumno['cuota'],
+                                    2
+                                ) ?>
                         </dd>
                     </div>
 
@@ -657,7 +651,7 @@ if (!empty($alumno['proximo_pago'])) {
                         <dd>
                             <?= htmlspecialchars(
                                 $alumno['objetivo']
-                                ?: 'No registrado',
+                                    ?: 'No registrado',
                                 ENT_QUOTES,
                                 'UTF-8'
                             ) ?>
@@ -676,7 +670,7 @@ if (!empty($alumno['proximo_pago'])) {
                     <?= nl2br(
                         htmlspecialchars(
                             $alumno['observaciones']
-                            ?: 'No existen observaciones.',
+                                ?: 'No existen observaciones.',
                             ENT_QUOTES,
                             'UTF-8'
                         )
@@ -688,186 +682,187 @@ if (!empty($alumno['proximo_pago'])) {
         </section>
         <section class="history-grid">
 
-    <article class="history-card">
+            <article class="history-card">
 
-        <div class="history-card-header">
+                <div class="history-card-header">
 
-            <div>
-                <br>
-                <h3>Historial de pagos</h3>
+                    <div>
+                        <br>
+                        <h3>Historial de pagos</h3>
 
-                <p>
-                    <?= (int) $resumenPagos['total_pagos'] ?>
-                    pagos registrados
-                </p>
-            </div>
+                        <p>
+                            <?= (int) $resumenPagos['total_pagos'] ?>
+                            pagos registrados
+                        </p>
+                    </div>
 
-            <strong class="history-total">
-                $<?= number_format(
-                    (float) $resumenPagos['total_pagado'],
-                    2
-                ) ?>
-            </strong>
+                    <strong class="history-total">
+                        $<?= number_format(
+                                (float) $resumenPagos['total_pagado'],
+                                2
+                            ) ?>
+                    </strong>
 
-        </div>
+                </div>
 
-        <?php if (empty($pagosAlumno)): ?>
+                <?php if (empty($pagosAlumno)): ?>
 
-            <div class="empty-history">
-                No existen pagos registrados.
-            </div>
+                    <div class="empty-history">
+                        No existen pagos registrados.
+                    </div>
 
-        <?php else: ?>
+                <?php else: ?>
 
-            <div class="table-container">
+                    <div class="table-container">
 
-                <table class="data-table">
+                        <table class="data-table">
 
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Concepto</th>
-                            <th>Cantidad</th>
-                            <th>Método</th>
-                        </tr>
-                    </thead>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Concepto</th>
+                                    <th>Cantidad</th>
+                                    <th>Método</th>
+                                </tr>
+                            </thead>
 
-                    <tbody>
+                            <tbody>
 
-                        <?php foreach ($pagosAlumno as $pago): ?>
+                                <?php foreach ($pagosAlumno as $pago): ?>
 
-                            <tr>
+                                    <tr>
 
-                                <td data-label="Fecha">
-                                    <?= date(
-                                        'd/m/Y',
-                                        strtotime($pago['fecha_pago'])
-                                    ) ?>
-                                </td>
+                                        <td data-label="Fecha">
+                                            <?= date(
+                                                'd/m/Y',
+                                                strtotime($pago['fecha_pago'])
+                                            ) ?>
+                                        </td>
 
-                                <td data-label="Concepto">
-                                    <?= htmlspecialchars(
-                                        $pago['concepto'],
-                                        ENT_QUOTES,
-                                        'UTF-8'
-                                    ) ?>
-                                </td>
+                                        <td data-label="Concepto">
+                                            <?= htmlspecialchars(
+                                                $pago['concepto'],
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ) ?>
+                                        </td>
 
-                                <td data-label="Cantidad">
-                                    <strong>
-                                        $<?= number_format(
-                                            (float) $pago['monto'],
-                                            2
-                                        ) ?>
-                                    </strong>
-                                </td>
+                                        <td data-label="Cantidad">
+                                            <strong>
+                                                $<?= number_format(
+                                                        (float) $pago['monto'],
+                                                        2
+                                                    ) ?>
+                                            </strong>
+                                        </td>
 
-                                <td data-label="Método">
-                                    <?= htmlspecialchars(
-                                        ucfirst($pago['metodo_pago']),
-                                        ENT_QUOTES,
-                                        'UTF-8'
-                                    ) ?>
-                                </td>
+                                        <td data-label="Método">
+                                            <?= htmlspecialchars(
+                                                ucfirst($pago['metodo_pago']),
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ) ?>
+                                        </td>
 
-                            </tr>
+                                    </tr>
 
-                        <?php endforeach; ?>
+                                <?php endforeach; ?>
 
-                    </tbody>
+                            </tbody>
 
-                </table>
+                        </table>
 
-            </div>
+                    </div>
 
-        <?php endif; ?>
+                <?php endif; ?>
 
-    </article>
+            </article>
 
-    <article class="history-card">
+            <article class="history-card">
 
-        <div class="history-card-header">
+                <div class="history-card-header">
 
-            <div>
-                <h3>Asistencias recientes</h3>
+                    <div>
+                        <h3>Asistencias recientes</h3>
 
-                <p>
-                    <?= (int) $resumenAsistencias['total_asistencias'] ?>
-                    asistencias registradas
-                </p>
-            </div>
+                        <p>
+                            <?= (int) $resumenAsistencias['total_asistencias'] ?>
+                            asistencias registradas
+                        </p>
+                    </div>
 
-        </div>
+                </div>
 
-        <?php if (empty($asistenciasAlumno)): ?>
+                <?php if (empty($asistenciasAlumno)): ?>
 
-            <div class="empty-history">
-                No existen asistencias registradas.
-            </div>
+                    <div class="empty-history">
+                        No existen asistencias registradas.
+                    </div>
 
-        <?php else: ?>
+                <?php else: ?>
 
-            <div class="table-container">
+                    <div class="table-container">
 
-                <table class="data-table">
+                        <table class="data-table">
 
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Hora</th>
-                            <th>Registró</th>
-                        </tr>
-                    </thead>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Registró</th>
+                                </tr>
+                            </thead>
 
-                    <tbody>
+                            <tbody>
 
-                        <?php foreach (
-                            $asistenciasAlumno as $asistencia
-                        ): ?>
+                                <?php foreach (
+                                    $asistenciasAlumno as $asistencia
+                                ): ?>
 
-                            <tr>
+                                    <tr>
 
-                                <td data-label="Fecha">
-                                    <?= date(
-                                        'd/m/Y',
-                                        strtotime($asistencia['fecha'])
-                                    ) ?>
-                                </td>
+                                        <td data-label="Fecha">
+                                            <?= date(
+                                                'd/m/Y',
+                                                strtotime($asistencia['fecha'])
+                                            ) ?>
+                                        </td>
 
-                                <td data-label="Hora">
-                                    <?= date(
-                                        'H:i',
-                                        strtotime(
-                                            $asistencia['hora_llegada']
-                                        )
-                                    ) ?>
-                                </td>
+                                        <td data-label="Hora">
+                                            <?= date(
+                                                'H:i',
+                                                strtotime(
+                                                    $asistencia['hora_llegada']
+                                                )
+                                            ) ?>
+                                        </td>
 
-                                <td data-label="Registró">
-                                    <?= htmlspecialchars(
-                                        $asistencia['registrado_por'],
-                                        ENT_QUOTES,
-                                        'UTF-8'
-                                    ) ?>
-                                </td>
+                                        <td data-label="Registró">
+                                            <?= htmlspecialchars(
+                                                $asistencia['registrado_por'],
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ) ?>
+                                        </td>
 
-                            </tr>
+                                    </tr>
 
-                        <?php endforeach; ?>
+                                <?php endforeach; ?>
 
-                    </tbody>
+                            </tbody>
 
-                </table>
+                        </table>
 
-            </div>
+                    </div>
 
-        <?php endif; ?>
+                <?php endif; ?>
 
-    </article>
+            </article>
 
-</section>
+        </section>
 
     </main>
 
 </body>
+
 </html>
