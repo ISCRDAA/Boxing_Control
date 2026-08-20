@@ -79,6 +79,7 @@ $ejerciciosPorDia = [];
 $consultaEjercicios = $pdo->prepare(
     'SELECT
         planeacion_ejercicios.id,
+        planeacion_ejercicios.ejercicio_id,
         planeacion_ejercicios.dia_semana,
         planeacion_ejercicios.orden,
         planeacion_ejercicios.series,
@@ -189,30 +190,27 @@ $claseEstado = match ($planeacion['estado']) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        content="width=device-width, initial-scale=1.0">
 
     <title>Ver planeación | Gym Box</title>
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/dashboard.css"
-    >
+        href="<?= BASE_URL ?>/css/dashboard.css">
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/alumnos.css"
-    >
+        href="<?= BASE_URL ?>/css/alumnos.css">
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/planeaciones.css"
-    >
+        href="<?= BASE_URL ?>/css/planeaciones.css">
 </head>
 
 <body>
@@ -226,8 +224,7 @@ $claseEstado = match ($planeacion['estado']) {
 
         <a
             class="btn-secondary"
-            href="<?= BASE_URL ?>/planeaciones/listar.php"
-        >
+            href="<?= BASE_URL ?>/planeaciones/listar.php">
             Volver a planeaciones
         </a>
 
@@ -281,14 +278,13 @@ $claseEstado = match ($planeacion['estado']) {
 
                 <a
                     class="planning-detail-student"
-                    href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $planeacion['alumno_id'] ?>"
-                >
+                    href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $planeacion['alumno_id'] ?>">
                     <?= htmlspecialchars(
                         $planeacion['numero_alumno']
-                        . ' - '
-                        . $planeacion['nombres']
-                        . ' '
-                        . $planeacion['apellidos'],
+                            . ' - '
+                            . $planeacion['nombres']
+                            . ' '
+                            . $planeacion['apellidos'],
                         ENT_QUOTES,
                         'UTF-8'
                     ) ?>
@@ -370,7 +366,7 @@ $claseEstado = match ($planeacion['estado']) {
                     <?= nl2br(
                         htmlspecialchars(
                             $planeacion['objetivo']
-                            ?: 'No se registró un objetivo.',
+                                ?: 'No se registró un objetivo.',
                             ENT_QUOTES,
                             'UTF-8'
                         )
@@ -387,7 +383,7 @@ $claseEstado = match ($planeacion['estado']) {
                     <?= nl2br(
                         htmlspecialchars(
                             $planeacion['observaciones']
-                            ?: 'No existen observaciones.',
+                                ?: 'No existen observaciones.',
                             ENT_QUOTES,
                             'UTF-8'
                         )
@@ -400,297 +396,408 @@ $claseEstado = match ($planeacion['estado']) {
 
         <section class="planning-exercises-section">
 
-    <div class="planning-exercises-header">
+            <div class="planning-exercises-header">
 
-        <div>
-            <h3>Ejercicios de la planeación</h3>
+                <div>
+                    <h3>Ejercicios de la planeación</h3>
 
-            <p>
-                <?= count($ejerciciosAsignados) ?>
-                ejercicios asignados
-            </p>
-        </div>
+                    <p>
+                        <?= count($ejerciciosAsignados) ?>
+                        ejercicios asignados
+                    </p>
+                </div>
 
-        <?php if (in_array(
-            $planeacion['estado'],
-            ['borrador', 'activa'],
-            true
-        )): ?>
+                <?php if (in_array(
+                    $planeacion['estado'],
+                    ['borrador', 'activa'],
+                    true
+                )): ?>
 
-            <a
-                class="btn-primary"
-                href="<?= BASE_URL ?>/planeaciones/agregar_ejercicio.php?planeacion_id=<?= $planeacionId ?>"
-            >
-                Agregar ejercicio
-            </a>
-
-        <?php endif; ?>
-
-    </div>
-
-    <?php if (empty($ejerciciosAsignados)): ?>
-
-        <div class="planning-exercises-empty">
-
-            <h4>Esta planeación todavía no tiene ejercicios</h4>
-
-            <p>
-                Agrega el primer ejercicio y selecciona el día
-                en que deberá realizarse.
-            </p>
-
-        </div>
-
-    <?php else: ?>
-
-        <div class="planning-days">
-
-            <?php foreach (
-                $nombresDias as $diaValor => $diaNombre
-            ): ?>
-
-                <?php if (
-                    empty($ejerciciosPorDia[$diaValor])
-                ): ?>
-
-                    <?php continue; ?>
+                    <a
+                        class="btn-primary"
+                        href="<?= BASE_URL ?>/planeaciones/agregar_ejercicio.php?planeacion_id=<?= $planeacionId ?>">
+                        Agregar ejercicio
+                    </a>
 
                 <?php endif; ?>
 
-                <article class="planning-day">
+            </div>
 
-                    <div class="planning-day-header">
+            <?php if (empty($ejerciciosAsignados)): ?>
 
-                        <h4>
-                            <?= $diaNombre ?>
-                        </h4>
+                <div class="planning-exercises-empty">
 
-                        <span>
-                            <?= count(
-                                $ejerciciosPorDia[$diaValor]
-                            ) ?>
-                            ejercicios
-                        </span>
+                    <h4>Esta planeación todavía no tiene ejercicios</h4>
 
-                    </div>
+                    <p>
+                        Agrega el primer ejercicio y selecciona el día
+                        en que deberá realizarse.
+                    </p>
 
-                    <div class="planning-day-exercises">
+                </div>
 
-                        <?php foreach (
-                            $ejerciciosPorDia[$diaValor]
-                            as $ejercicio
+            <?php else: ?>
+
+                <div class="planning-days">
+
+                    <?php foreach (
+                        $nombresDias as $diaValor => $diaNombre
+                    ): ?>
+
+                        <?php if (
+                            empty($ejerciciosPorDia[$diaValor])
                         ): ?>
 
-                            <?php
-                            $detalles = [];
+                            <?php continue; ?>
 
-                            if ($ejercicio['series'] !== null) {
-                                $detalles[] =
-                                    (int) $ejercicio['series']
-                                    . ' series';
-                            }
+                        <?php endif; ?>
 
-                            if (
-                                $ejercicio['repeticiones'] !== null
-                            ) {
-                                $detalles[] =
-                                    (int) $ejercicio['repeticiones']
-                                    . ' repeticiones';
-                            }
+                        <article class="planning-day">
 
-                            if ($ejercicio['rounds'] !== null) {
-                                $detalles[] =
-                                    (int) $ejercicio['rounds']
-                                    . ' rounds';
-                            }
+                            <div class="planning-day-header">
 
-                            if (
-                                $ejercicio['duracion_minutos']
-                                !== null
-                            ) {
-                                $detalles[] =
-                                    rtrim(
-                                        rtrim(
+                                <h4>
+                                    <?= $diaNombre ?>
+                                </h4>
+
+                                <span>
+                                    <?= count(
+                                        $ejerciciosPorDia[$diaValor]
+                                    ) ?>
+                                    ejercicios
+                                </span>
+
+                            </div>
+
+                            <div class="planning-day-exercises">
+
+                                <?php foreach (
+                                    $ejerciciosPorDia[$diaValor]
+                                    as $indiceEjercicio => $ejercicio
+                                ): ?>
+
+                                    <?php
+                                    $esPrimero = $indiceEjercicio === 0;
+
+                                    $esUltimo =
+                                        $indiceEjercicio
+                                        === count($ejerciciosPorDia[$diaValor]) - 1;
+                                    ?>
+
+                                    <?php
+                                    $detalles = [];
+
+                                    if ($ejercicio['series'] !== null) {
+                                        $detalles[] =
+                                            (int) $ejercicio['series']
+                                            . ' series';
+                                    }
+
+                                    if (
+                                        $ejercicio['repeticiones'] !== null
+                                    ) {
+                                        $detalles[] =
+                                            (int) $ejercicio['repeticiones']
+                                            . ' repeticiones';
+                                    }
+
+                                    if ($ejercicio['rounds'] !== null) {
+                                        $detalles[] =
+                                            (int) $ejercicio['rounds']
+                                            . ' rounds';
+                                    }
+
+                                    if (
+                                        $ejercicio['duracion_minutos']
+                                        !== null
+                                    ) {
+                                        $detalles[] =
+                                            rtrim(
+                                                rtrim(
+                                                    number_format(
+                                                        (float) $ejercicio['duracion_minutos'],
+                                                        2,
+                                                        '.',
+                                                        ''
+                                                    ),
+                                                    '0'
+                                                ),
+                                                '.'
+                                            )
+                                            . ' minutos';
+                                    }
+
+                                    if (
+                                        $ejercicio['distancia_metros']
+                                        !== null
+                                    ) {
+                                        $detalles[] =
                                             number_format(
-                                                (float) $ejercicio[
-                                                    'duracion_minutos'
-                                                ],
-                                                2,
-                                                '.',
-                                                ''
-                                            ),
-                                            '0'
-                                        ),
-                                        '.'
-                                    )
-                                    . ' minutos';
-                            }
+                                                (float) $ejercicio['distancia_metros'],
+                                                0
+                                            )
+                                            . ' metros';
+                                    }
 
-                            if (
-                                $ejercicio['distancia_metros']
-                                !== null
-                            ) {
-                                $detalles[] =
-                                    number_format(
-                                        (float) $ejercicio[
-                                            'distancia_metros'
-                                        ],
-                                        0
-                                    )
-                                    . ' metros';
-                            }
+                                    if (
+                                        $ejercicio['descanso_segundos']
+                                        !== null
+                                    ) {
+                                        $detalles[] =
+                                            (int) $ejercicio['descanso_segundos']
+                                            . ' segundos de descanso';
+                                    }
 
-                            if (
-                                $ejercicio['descanso_segundos']
-                                !== null
-                            ) {
-                                $detalles[] =
-                                    (int) $ejercicio[
-                                        'descanso_segundos'
-                                    ]
-                                    . ' segundos de descanso';
-                            }
+                                    $textoIntensidad = ucfirst(
+                                        str_replace(
+                                            '_',
+                                            ' ',
+                                            $ejercicio['intensidad']
+                                        )
+                                    );
+                                    ?>
 
-                            $textoIntensidad = ucfirst(
-                                str_replace(
-                                    '_',
-                                    ' ',
-                                    $ejercicio['intensidad']
-                                )
-                            );
-                            ?>
+                                    <div class="assigned-exercise">
 
-                            <div class="assigned-exercise">
-
-                                <div class="assigned-exercise-order">
-                                    <?= (int) $ejercicio['orden'] ?>
-                                </div>
-
-                                <div class="assigned-exercise-content">
-
-                                    <div class="assigned-exercise-title">
-
-                                        <div>
-                                            <h5>
-                                                <?= htmlspecialchars(
-                                                    $ejercicio[
-                                                        'ejercicio_nombre'
-                                                    ],
-                                                    ENT_QUOTES,
-                                                    'UTF-8'
-                                                ) ?>
-                                            </h5>
-
-                                            <span>
-                                                <?= htmlspecialchars(
-                                                    $nombresCategorias[
-                                                        $ejercicio[
-                                                            'categoria'
-                                                        ]
-                                                    ] ?? 'Otro',
-                                                    ENT_QUOTES,
-                                                    'UTF-8'
-                                                ) ?>
-                                            </span>
+                                        <div class="assigned-exercise-order">
+                                            <?= (int) $ejercicio['orden'] ?>
                                         </div>
 
-                                        <span
-                                            class="intensity-badge intensity-<?= htmlspecialchars(
-                                                $ejercicio['intensidad'],
-                                                ENT_QUOTES,
-                                                'UTF-8'
-                                            ) ?>"
-                                        >
-                                            Intensidad:
-                                            <?= htmlspecialchars(
-                                                $textoIntensidad,
-                                                ENT_QUOTES,
-                                                'UTF-8'
-                                            ) ?>
-                                        </span>
+                                        <div class="assigned-exercise-content">
 
-                                    </div>
+                                            <div class="assigned-exercise-title">
 
-                                    <?php if (!empty($detalles)): ?>
+                                                <div>
+                                                    <h5>
+                                                        <?= htmlspecialchars(
+                                                            $ejercicio['ejercicio_nombre'],
+                                                            ENT_QUOTES,
+                                                            'UTF-8'
+                                                        ) ?>
+                                                    </h5>
 
-                                        <div class="exercise-measurements">
+                                                    <span>
+                                                        <?= htmlspecialchars(
+                                                            $nombresCategorias[$ejercicio['categoria']] ?? 'Otro',
+                                                            ENT_QUOTES,
+                                                            'UTF-8'
+                                                        ) ?>
+                                                    </span>
+                                                </div>
 
-                                            <?php foreach (
-                                                $detalles as $detalle
-                                            ): ?>
-
-                                                <span>
+                                                <span
+                                                    class="intensity-badge intensity-<?= htmlspecialchars(
+                                                                                            $ejercicio['intensidad'],
+                                                                                            ENT_QUOTES,
+                                                                                            'UTF-8'
+                                                                                        ) ?>">
+                                                    Intensidad:
                                                     <?= htmlspecialchars(
-                                                        $detalle,
+                                                        $textoIntensidad,
                                                         ENT_QUOTES,
                                                         'UTF-8'
                                                     ) ?>
                                                 </span>
 
-                                            <?php endforeach; ?>
+                                            </div>
 
-                                        </div>
+                                            <?php if (!empty($detalles)): ?>
 
-                                    <?php else: ?>
+                                                <div class="exercise-measurements">
 
-                                        <div class="exercise-measurements">
+                                                    <?php foreach (
+                                                        $detalles as $detalle
+                                                    ): ?>
 
-                                            <span>
-                                                Medición libre
-                                            </span>
+                                                        <span>
+                                                            <?= htmlspecialchars(
+                                                                $detalle,
+                                                                ENT_QUOTES,
+                                                                'UTF-8'
+                                                            ) ?>
+                                                        </span>
 
-                                        </div>
+                                                    <?php endforeach; ?>
 
-                                    <?php endif; ?>
+                                                </div>
 
-                                    <?php if (
-                                        $ejercicio['indicaciones']
-                                    ): ?>
+                                            <?php else: ?>
 
-                                        <p class="assigned-exercise-notes">
-                                            <?= nl2br(
-                                                htmlspecialchars(
-                                                    $ejercicio[
-                                                        'indicaciones'
-                                                    ],
+                                                <div class="exercise-measurements">
+
+                                                    <span>
+                                                        Medición libre
+                                                    </span>
+
+                                                </div>
+
+                                            <?php endif; ?>
+
+                                            <?php if (
+                                                $ejercicio['indicaciones']
+                                            ): ?>
+
+                                                <p class="assigned-exercise-notes">
+                                                    <?= nl2br(
+                                                        htmlspecialchars(
+                                                            $ejercicio['indicaciones'],
+                                                            ENT_QUOTES,
+                                                            'UTF-8'
+                                                        )
+                                                    ) ?>
+                                                </p>
+
+                                            <?php endif; ?>
+
+                                            <?php if (in_array(
+                                                $planeacion['estado'],
+                                                ['borrador', 'activa'],
+                                                true
+                                            )): ?>
+
+                                                <div class="assigned-exercise-actions">
+
+                                                    <a
+                                                        class="exercise-action exercise-action-edit"
+                                                        href="<?= BASE_URL ?>/planeaciones/editar_ejercicio.php?id=<?= (int) $ejercicio['id'] ?>">
+                                                        Editar
+                                                    </a>
+
+                                                    <?php if (!$esPrimero): ?>
+
+                                                        <form
+                                                            action="<?= BASE_URL ?>/api/planeaciones/mover_ejercicio.php"
+                                                            method="POST">
+
+                                                            <input
+                                                                type="hidden"
+                                                                name="csrf_token"
+                                                                value="<?= htmlspecialchars(
+                                                                            $_SESSION['csrf_token'],
+                                                                            ENT_QUOTES,
+                                                                            'UTF-8'
+                                                                        ) ?>">
+
+                                                            <input
+                                                                type="hidden"
+                                                                name="id"
+                                                                value="<?= (int) $ejercicio['id'] ?>">
+
+                                                            <input
+                                                                type="hidden"
+                                                                name="direccion"
+                                                                value="arriba">
+
+                                                            <button
+                                                                class="exercise-action exercise-action-move"
+                                                                type="submit"
+                                                                title="Mover hacia arriba">
+                                                                ↑ Subir
+                                                            </button>
+
+                                                        </form>
+
+                                                    <?php endif; ?>
+
+                                                    <?php if (!$esUltimo): ?>
+
+                                                        <form
+                                                            action="<?= BASE_URL ?>/api/planeaciones/mover_ejercicio.php"
+                                                            method="POST">
+
+                                                            <input
+                                                                type="hidden"
+                                                                name="csrf_token"
+                                                                value="<?= htmlspecialchars(
+                                                                            $_SESSION['csrf_token'],
+                                                                            ENT_QUOTES,
+                                                                            'UTF-8'
+                                                                        ) ?>">
+
+                                                            <input
+                                                                type="hidden"
+                                                                name="id"
+                                                                value="<?= (int) $ejercicio['id'] ?>">
+
+                                                            <input
+                                                                type="hidden"
+                                                                name="direccion"
+                                                                value="abajo">
+
+                                                            <button
+                                                                class="exercise-action exercise-action-move"
+                                                                type="submit"
+                                                                title="Mover hacia abajo">
+                                                                ↓ Bajar
+                                                            </button>
+
+                                                        </form>
+
+                                                    <?php endif; ?>
+
+                                                    <form
+                                                        action="<?= BASE_URL ?>/api/planeaciones/retirar_ejercicio.php"
+                                                        method="POST"
+                                                        onsubmit="return confirm('¿Confirmas que deseas retirar este ejercicio de la planeación?');">
+
+                                                        <input
+                                                            type="hidden"
+                                                            name="csrf_token"
+                                                            value="<?= htmlspecialchars(
+                                                                        $_SESSION['csrf_token'],
+                                                                        ENT_QUOTES,
+                                                                        'UTF-8'
+                                                                    ) ?>">
+
+                                                        <input
+                                                            type="hidden"
+                                                            name="id"
+                                                            value="<?= (int) $ejercicio['id'] ?>">
+
+                                                        <button
+                                                            class="exercise-action exercise-action-remove"
+                                                            type="submit">
+                                                            Retirar
+                                                        </button>
+
+                                                    </form>
+
+                                                </div>
+
+                                            <?php endif; ?>
+
+
+
+
+                                            <small class="assigned-exercise-user">
+                                                Agregado por:
+                                                <?= htmlspecialchars(
+                                                    $ejercicio['agregado_por_nombre'],
                                                     ENT_QUOTES,
                                                     'UTF-8'
-                                                )
-                                            ) ?>
-                                        </p>
+                                                ) ?>
+                                            </small>
 
-                                    <?php endif; ?>
+                                        </div>
 
-                                    <small class="assigned-exercise-user">
-                                        Agregado por:
-                                        <?= htmlspecialchars(
-                                            $ejercicio[
-                                                'agregado_por_nombre'
-                                            ],
-                                            ENT_QUOTES,
-                                            'UTF-8'
-                                        ) ?>
-                                    </small>
+                                    </div>
 
-                                </div>
+                                <?php endforeach; ?>
 
                             </div>
 
-                        <?php endforeach; ?>
+                        </article>
 
-                    </div>
+                    <?php endforeach; ?>
 
-                </article>
+                </div>
 
-            <?php endforeach; ?>
+            <?php endif; ?>
 
-        </div>
-
-    <?php endif; ?>
-
-</section>
+        </section>
 
     </main>
 
 </body>
+
 </html>
