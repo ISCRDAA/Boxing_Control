@@ -210,7 +210,7 @@ $claseEstado = match ($planeacion['estado']) {
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/planeaciones.css">
+        href="<?= BASE_URL ?>/css/planeaciones.css?=v1">
 </head>
 
 <body>
@@ -289,6 +289,139 @@ $claseEstado = match ($planeacion['estado']) {
                         'UTF-8'
                     ) ?>
                 </a>
+
+            </div>
+            <div class="planning-main-actions">
+
+                <?php if (in_array(
+                    $planeacion['estado'],
+                    ['borrador', 'activa'],
+                    true
+                )): ?>
+
+                    <a
+                        class="btn-primary"
+                        href="<?= BASE_URL ?>/planeaciones/editar.php?id=<?= $planeacionId ?>">
+                        Editar planeación
+                    </a>
+
+                <?php endif; ?>
+
+                <?php if (
+                    $planeacion['estado'] === 'borrador'
+                ): ?>
+
+                    <form
+                        action="<?= BASE_URL ?>/api/planeaciones/cambiar_estado.php"
+                        method="POST"
+                        onsubmit="return confirm('¿Confirmas que deseas activar esta planeación?');">
+
+                        <input
+                            type="hidden"
+                            name="csrf_token"
+                            value="<?= htmlspecialchars(
+                                        $_SESSION['csrf_token'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>">
+
+                        <input
+                            type="hidden"
+                            name="id"
+                            value="<?= $planeacionId ?>">
+
+                        <input
+                            type="hidden"
+                            name="estado"
+                            value="activa">
+
+                        <button
+                            class="btn-activate-plan"
+                            type="submit">
+                            Activar planeación
+                        </button>
+
+                    </form>
+
+                <?php endif; ?>
+
+                <?php if (
+                    $planeacion['estado'] === 'activa'
+                ): ?>
+
+                    <form
+                        action="<?= BASE_URL ?>/api/planeaciones/cambiar_estado.php"
+                        method="POST"
+                        onsubmit="return confirm('¿Confirmas que esta planeación fue terminada?');">
+
+                        <input
+                            type="hidden"
+                            name="csrf_token"
+                            value="<?= htmlspecialchars(
+                                        $_SESSION['csrf_token'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>">
+
+                        <input
+                            type="hidden"
+                            name="id"
+                            value="<?= $planeacionId ?>">
+
+                        <input
+                            type="hidden"
+                            name="estado"
+                            value="terminada">
+
+                        <button
+                            class="btn-finish-plan"
+                            type="submit">
+                            Terminar planeación
+                        </button>
+
+                    </form>
+
+                <?php endif; ?>
+
+                <?php if (in_array(
+                    $planeacion['estado'],
+                    ['borrador', 'activa'],
+                    true
+                )): ?>
+
+                    <form
+                        action="<?= BASE_URL ?>/api/planeaciones/cambiar_estado.php"
+                        method="POST"
+                        onsubmit="return confirm('¿Confirmas que deseas cancelar esta planeación?');">
+
+                        <input
+                            type="hidden"
+                            name="csrf_token"
+                            value="<?= htmlspecialchars(
+                                        $_SESSION['csrf_token'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>">
+
+                        <input
+                            type="hidden"
+                            name="id"
+                            value="<?= $planeacionId ?>">
+
+                        <input
+                            type="hidden"
+                            name="estado"
+                            value="cancelada">
+
+                        <button
+                            class="btn-cancel-plan"
+                            type="submit">
+                            Cancelar planeación
+                        </button>
+
+                    </form>
+
+                <?php endif; ?>
 
             </div>
 

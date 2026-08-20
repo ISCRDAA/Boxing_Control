@@ -526,3 +526,83 @@
         width: 100%;
     }
 }
+
+.planning-detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.planning-main-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 9px;
+}
+
+.planning-main-actions form {
+    margin: 0;
+}
+
+.btn-activate-plan,
+.btn-finish-plan,
+.btn-cancel-plan {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-activate-plan {
+    background: #15803d;
+    color: #ffffff;
+}
+
+.btn-activate-plan:hover {
+    background: #166534;
+}
+
+.btn-finish-plan {
+    background: #1d4ed8;
+    color: #ffffff;
+}
+
+.btn-finish-plan:hover {
+    background: #1e40af;
+}
+
+.btn-cancel-plan {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.btn-cancel-plan:hover {
+    background: #fecaca;
+}
+
+@media (max-width: 800px) {
+
+    .planning-detail-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .planning-main-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .planning-main-actions form,
+    .planning-main-actions a,
+    .planning-main-actions button {
+        width: 100%;
+    }
+}
