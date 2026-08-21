@@ -293,6 +293,16 @@ $claseEstado = match ($planeacion['estado']) {
             </div>
             <div class="planning-main-actions">
 
+                <?php if ($planeacion['estado'] === 'activa'): ?>
+
+                    <a
+                        class="btn-training"
+                        href="<?= BASE_URL ?>/planeaciones/seguimiento.php?planeacion_id=<?= $planeacionId ?>&fecha=<?= date('Y-m-d') ?>">
+                        Registrar entrenamiento
+                    </a>
+
+                <?php endif; ?>
+
                 <?php if (in_array(
                     $planeacion['estado'],
                     ['borrador', 'activa'],
