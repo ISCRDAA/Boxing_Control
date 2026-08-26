@@ -1,0 +1,232 @@
+/* =========================================================
+   BASE MÓVIL
+========================================================= */
+
+.mobile-bottom-nav {
+    display: none;
+}
+
+/* =========================================================
+   MÓVIL
+========================================================= */
+
+@media (max-width: 760px) {
+
+    body {
+        padding-bottom: 82px;
+        background: #f3f4f6;
+    }
+
+    /* -----------------------------------------
+       Barra superior
+    ----------------------------------------- */
+
+    .topbar {
+        min-height: auto;
+        padding: 13px 15px;
+    }
+
+    .brand h1 {
+        font-size: 18px;
+    }
+
+    .brand p {
+        margin-top: 2px;
+        font-size: 11px;
+    }
+
+    .topbar .btn-secondary {
+        min-height: 36px;
+        padding: 7px 10px;
+        font-size: 11px;
+    }
+
+    /* -----------------------------------------
+       Contenedores
+    ----------------------------------------- */
+
+    .module-container {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .module-card,
+    .form-card,
+    .profile-card,
+    .detail-card,
+    .history-card,
+    .planning-detail-header,
+    .planning-exercises-section {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    /* -----------------------------------------
+       Encabezados
+    ----------------------------------------- */
+
+    .module-header {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .module-header h2 {
+        font-size: 20px;
+    }
+
+    .module-header p {
+        font-size: 13px;
+        line-height: 1.45;
+    }
+
+    .module-header .btn-primary {
+        width: 100%;
+    }
+
+    /* -----------------------------------------
+       Botones táctiles
+    ----------------------------------------- */
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-success,
+    .btn-danger {
+        min-height: 44px;
+        border-radius: 10px;
+    }
+
+    button,
+    select,
+    input,
+    textarea {
+        font-size: 16px;
+    }
+
+    /*
+     * 16 px evita que Safari/iPhone haga zoom
+     * automático al entrar en los inputs.
+     */
+
+    /* -----------------------------------------
+       Formularios
+    ----------------------------------------- */
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .form-group-full {
+        grid-column: auto;
+    }
+
+    .form-control {
+        min-height: 46px;
+        padding: 11px 12px;
+        border-radius: 10px;
+    }
+
+    textarea.form-control {
+        min-height: 100px;
+    }
+
+    .form-actions {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 9px;
+    }
+
+    .form-actions a,
+    .form-actions button {
+        width: 100%;
+    }
+
+    /* -----------------------------------------
+       Buscadores
+    ----------------------------------------- */
+
+    .search-form,
+    .exercise-filters,
+    .planning-filters {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    /* -----------------------------------------
+       Navegación inferior
+    ----------------------------------------- */
+
+    .mobile-bottom-nav {
+        position: fixed;
+        z-index: 9999;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+
+        height: 68px;
+
+        border-top: 1px solid #e5e7eb;
+
+        background: rgba(255, 255, 255, 0.97);
+
+        box-shadow:
+            0 -5px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    .mobile-nav-item {
+        position: relative;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        gap: 3px;
+
+        color: #6b7280;
+
+        text-decoration: none;
+
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-nav-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 26px;
+        height: 26px;
+
+        font-size: 21px;
+        font-weight: 700;
+    }
+
+    .mobile-nav-text {
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+    .mobile-nav-item.is-active {
+        color: #dc2626;
+    }
+
+    .mobile-nav-item.is-active::before {
+        position: absolute;
+        top: 0;
+
+        width: 32px;
+        height: 3px;
+
+        border-radius: 0 0 4px 4px;
+
+        background: #dc2626;
+
+        content: "";
+    }
+}

@@ -13,11 +13,18 @@ require_once __DIR__ . '/config/db.php';
 |
 */
 
+$nombre = 'COACH DIEGO SG';
+$usuario = 'Diego';
+$passwordPlano = 'Culebras1';
+$rol = 'Coach';
+
+/*
 $nombre = 'Administrador General';
 $usuario = 'admin';
 $passwordPlano = 'BoxGym2026*';
 $rol = 'administrador';
 
+*/
 try {
     $consulta = $pdo->prepare(
         'SELECT id
@@ -111,7 +118,7 @@ try {
         elimina el archivo <strong>crear_admin.php</strong>.
     </p>
 
-    <a href="/gym_box/login.php">
+    <a href="/Boxing_Control/login.php">
         Ir al inicio de sesión
     </a>
 

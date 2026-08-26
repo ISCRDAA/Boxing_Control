@@ -6,6 +6,7 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../config/session.php';
 
 requerirSesion();
+$seccionActiva = 'asistencias';
 
 $mensajeExito = $_SESSION['mensaje_exito'] ?? null;
 $mensajeError = $_SESSION['mensaje_error'] ?? null;
@@ -157,30 +158,30 @@ $historial = $consultaHistorial->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        content="width=device-width, initial-scale=1.0">
 
     <title>Asistencias | Gym Box</title>
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/dashboard.css"
-    >
+        href="<?= BASE_URL ?>/css/dashboard.css">
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/alumnos.css"
-    >
+        href="<?= BASE_URL ?>/css/alumnos.css">
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/asistencias.css"
-    >
+        href="<?= BASE_URL ?>/css/asistencias.css">
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URL ?>/css/mobile.css">
 </head>
 
 <body>
@@ -198,8 +199,7 @@ $historial = $consultaHistorial->fetchAll();
 
         <a
             class="btn-secondary"
-            href="<?= BASE_URL ?>/dashboard.php"
-        >
+            href="<?= BASE_URL ?>/dashboard.php">
             Volver al panel
         </a>
 
@@ -267,8 +267,7 @@ $historial = $consultaHistorial->fetchAll();
             <form
                 class="search-form"
                 method="GET"
-                action="<?= BASE_URL ?>/asistencias/listar.php"
-            >
+                action="<?= BASE_URL ?>/asistencias/listar.php">
 
                 <input
                     class="form-control"
@@ -276,16 +275,14 @@ $historial = $consultaHistorial->fetchAll();
                     name="q"
                     placeholder="Buscar alumno"
                     value="<?= htmlspecialchars(
-                        $busqueda,
-                        ENT_QUOTES,
-                        'UTF-8'
-                    ) ?>"
-                >
+                                $busqueda,
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>">
 
                 <button
                     class="btn-primary"
-                    type="submit"
-                >
+                    type="submit">
                     Buscar
                 </button>
 
@@ -293,8 +290,7 @@ $historial = $consultaHistorial->fetchAll();
 
                     <a
                         class="btn-secondary"
-                        href="<?= BASE_URL ?>/asistencias/listar.php"
-                    >
+                        href="<?= BASE_URL ?>/asistencias/listar.php">
                         Limpiar
                     </a>
 
@@ -350,12 +346,11 @@ $historial = $consultaHistorial->fetchAll();
 
                                         <a
                                             class="student-link"
-                                            href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $alumno['id'] ?>"
-                                        >
+                                            href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $alumno['id'] ?>">
                                             <?= htmlspecialchars(
                                                 $alumno['nombres']
-                                                . ' '
-                                                . $alumno['apellidos'],
+                                                    . ' '
+                                                    . $alumno['apellidos'],
                                                 ENT_QUOTES,
                                                 'UTF-8'
                                             ) ?>
@@ -407,35 +402,30 @@ $historial = $consultaHistorial->fetchAll();
 
                                             <form
                                                 action="<?= BASE_URL ?>/api/asistencias/registrar.php"
-                                                method="POST"
-                                            >
+                                                method="POST">
 
                                                 <input
                                                     type="hidden"
                                                     name="csrf_token"
                                                     value="<?= htmlspecialchars(
-                                                        $_SESSION['csrf_token'],
-                                                        ENT_QUOTES,
-                                                        'UTF-8'
-                                                    ) ?>"
-                                                >
+                                                                $_SESSION['csrf_token'],
+                                                                ENT_QUOTES,
+                                                                'UTF-8'
+                                                            ) ?>">
 
                                                 <input
                                                     type="hidden"
                                                     name="alumno_id"
-                                                    value="<?= (int) $alumno['id'] ?>"
-                                                >
+                                                    value="<?= (int) $alumno['id'] ?>">
 
                                                 <input
                                                     type="hidden"
                                                     name="origen"
-                                                    value="listar"
-                                                >
+                                                    value="listar">
 
                                                 <button
                                                     class="btn-attendance"
-                                                    type="submit"
-                                                >
+                                                    type="submit">
                                                     Registrar llegada
                                                 </button>
 
@@ -532,12 +522,11 @@ $historial = $consultaHistorial->fetchAll();
 
                                         <a
                                             class="student-link"
-                                            href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $registro['alumno_id'] ?>"
-                                        >
+                                            href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $registro['alumno_id'] ?>">
                                             <?= htmlspecialchars(
                                                 $registro['nombres']
-                                                . ' '
-                                                . $registro['apellidos'],
+                                                    . ' '
+                                                    . $registro['apellidos'],
                                                 ENT_QUOTES,
                                                 'UTF-8'
                                             ) ?>
@@ -578,6 +567,7 @@ $historial = $consultaHistorial->fetchAll();
         </section>
 
     </main>
-
+    <?php require __DIR__ . '/../partials/mobile_nav.php'; ?>
 </body>
+
 </html>

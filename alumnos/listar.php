@@ -6,6 +6,7 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../config/session.php';
 
 requerirSesion();
+$seccionActiva = 'alumnos';
 
 $mensajeExito = $_SESSION['mensaje_exito'] ?? null;
 $mensajeError = $_SESSION['mensaje_error'] ?? null;
@@ -36,16 +37,29 @@ $sql = '
 $parametros = [];
 
 if ($busqueda !== '') {
+
     $sql .= '
         WHERE
-            numero_alumno LIKE :busqueda
-            OR nombres LIKE :busqueda
-            OR apellidos LIKE :busqueda
-            OR CONCAT(nombres, " ", apellidos) LIKE :busqueda
-            OR telefono LIKE :busqueda
+            numero_alumno LIKE :busqueda_numero
+            OR nombres LIKE :busqueda_nombres
+            OR apellidos LIKE :busqueda_apellidos
+            OR CONCAT(
+                nombres,
+                " ",
+                apellidos
+            ) LIKE :busqueda_completa
+            OR telefono LIKE :busqueda_telefono
     ';
 
-    $parametros['busqueda'] = '%' . $busqueda . '%';
+    $textoBusqueda = '%' . $busqueda . '%';
+
+    $parametros = [
+        'busqueda_numero' => $textoBusqueda,
+        'busqueda_nombres' => $textoBusqueda,
+        'busqueda_apellidos' => $textoBusqueda,
+        'busqueda_completa' => $textoBusqueda,
+        'busqueda_telefono' => $textoBusqueda,
+    ];
 }
 
 $sql .= '
@@ -65,25 +79,26 @@ $hoy = date('Y-m-d');
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        content="width=device-width, initial-scale=1.0">
 
     <title>Alumnos | Gym Box</title>
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/dashboard.css"
-    >
+        href="<?= BASE_URL ?>/css/dashboard.css">
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/alumnos.css"
-    >
+        href="<?= BASE_URL ?>/css/alumnos.css">
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URL ?>/css/mobile.css">
 </head>
 
 <body>
@@ -97,8 +112,7 @@ $hoy = date('Y-m-d');
 
         <a
             class="btn-secondary"
-            href="<?= BASE_URL ?>/dashboard.php"
-        >
+            href="<?= BASE_URL ?>/dashboard.php">
             Volver al panel
         </a>
 
@@ -120,8 +134,7 @@ $hoy = date('Y-m-d');
 
                 <a
                     class="btn-primary"
-                    href="<?= BASE_URL ?>/alumnos/crear.php"
-                >
+                    href="<?= BASE_URL ?>/alumnos/crear.php">
                     Registrar alumno
                 </a>
 
@@ -154,8 +167,7 @@ $hoy = date('Y-m-d');
             <form
                 class="search-form"
                 method="GET"
-                action="<?= BASE_URL ?>/alumnos/listar.php"
-            >
+                action="<?= BASE_URL ?>/alumnos/listar.php">
 
                 <input
                     class="form-control"
@@ -163,16 +175,14 @@ $hoy = date('Y-m-d');
                     name="q"
                     placeholder="Buscar por nombre, número o teléfono"
                     value="<?= htmlspecialchars(
-                        $busqueda,
-                        ENT_QUOTES,
-                        'UTF-8'
-                    ) ?>"
-                >
+                                $busqueda,
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>">
 
                 <button
                     class="btn-primary"
-                    type="submit"
-                >
+                    type="submit">
                     Buscar
                 </button>
 
@@ -180,8 +190,7 @@ $hoy = date('Y-m-d');
 
                     <a
                         class="btn-secondary"
-                        href="<?= BASE_URL ?>/alumnos/listar.php"
-                    >
+                        href="<?= BASE_URL ?>/alumnos/listar.php">
                         Limpiar
                     </a>
 
@@ -266,8 +275,8 @@ $hoy = date('Y-m-d');
                                     <td data-label="Alumno">
                                         <?= htmlspecialchars(
                                             $alumno['nombres']
-                                            . ' '
-                                            . $alumno['apellidos'],
+                                                . ' '
+                                                . $alumno['apellidos'],
                                             ENT_QUOTES,
                                             'UTF-8'
                                         ) ?>
@@ -276,7 +285,7 @@ $hoy = date('Y-m-d');
                                     <td data-label="Teléfono">
                                         <?= htmlspecialchars(
                                             $alumno['telefono']
-                                            ?: 'Sin teléfono',
+                                                ?: 'Sin teléfono',
                                             ENT_QUOTES,
                                             'UTF-8'
                                         ) ?>
@@ -307,9 +316,9 @@ $hoy = date('Y-m-d');
 
                                         <small>
                                             $<?= number_format(
-                                                (float) $alumno['cuota'],
-                                                2
-                                            ) ?>
+                                                    (float) $alumno['cuota'],
+                                                    2
+                                                ) ?>
                                         </small>
                                     </td>
 
@@ -337,8 +346,7 @@ $hoy = date('Y-m-d');
                                         <br>
 
                                         <span
-                                            class="badge <?= $clasePago ?>"
-                                        >
+                                            class="badge <?= $clasePago ?>">
                                             <?= $estadoPago ?>
                                         </span>
                                     </td>
@@ -350,16 +358,14 @@ $hoy = date('Y-m-d');
                                         ): ?>
 
                                             <span
-                                                class="badge badge-success"
-                                            >
+                                                class="badge badge-success">
                                                 Activo
                                             </span>
 
                                         <?php else: ?>
 
                                             <span
-                                                class="badge badge-danger"
-                                            >
+                                                class="badge badge-danger">
                                                 Inactivo
                                             </span>
 
@@ -368,66 +374,59 @@ $hoy = date('Y-m-d');
                                     </td>
                                     <td data-label="Acciones">
 
-    <div class="table-actions">
+                                        <div class="table-actions">
 
-        <a
-            class="btn-small btn-view"
-            href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $alumno['id'] ?>"
-        >
-            Ver
-        </a>
+                                            <a
+                                                class="btn-small btn-view"
+                                                href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $alumno['id'] ?>">
+                                                Ver
+                                            </a>
 
-        <a
-            class="btn-small btn-edit"
-            href="<?= BASE_URL ?>/alumnos/editar.php?id=<?= (int) $alumno['id'] ?>"
-        >
-            Editar
-        </a>
+                                            <a
+                                                class="btn-small btn-edit"
+                                                href="<?= BASE_URL ?>/alumnos/editar.php?id=<?= (int) $alumno['id'] ?>">
+                                                Editar
+                                            </a>
 
-        <form
-            action="<?= BASE_URL ?>/api/alumnos/cambiar_estado.php"
-            method="POST"
-            onsubmit="return confirm('¿Confirmas el cambio de estado del alumno?');"
-        >
+                                            <form
+                                                action="<?= BASE_URL ?>/api/alumnos/cambiar_estado.php"
+                                                method="POST"
+                                                onsubmit="return confirm('¿Confirmas el cambio de estado del alumno?');">
 
-            <input
-                type="hidden"
-                name="csrf_token"
-                value="<?= htmlspecialchars(
-                    $_SESSION['csrf_token'],
-                    ENT_QUOTES,
-                    'UTF-8'
-                ) ?>"
-            >
+                                                <input
+                                                    type="hidden"
+                                                    name="csrf_token"
+                                                    value="<?= htmlspecialchars(
+                                                                $_SESSION['csrf_token'],
+                                                                ENT_QUOTES,
+                                                                'UTF-8'
+                                                            ) ?>">
 
-            <input
-                type="hidden"
-                name="id"
-                value="<?= (int) $alumno['id'] ?>"
-            >
+                                                <input
+                                                    type="hidden"
+                                                    name="id"
+                                                    value="<?= (int) $alumno['id'] ?>">
 
-            <input
-                type="hidden"
-                name="origen"
-                value="listar"
-            >
+                                                <input
+                                                    type="hidden"
+                                                    name="origen"
+                                                    value="listar">
 
-            <button
-                class="btn-small <?= $alumno['estado'] === 'activo'
-                    ? 'btn-disable'
-                    : 'btn-enable' ?>"
-                type="submit"
-            >
-                <?= $alumno['estado'] === 'activo'
-                    ? 'Desactivar'
-                    : 'Activar' ?>
-            </button>
+                                                <button
+                                                    class="btn-small <?= $alumno['estado'] === 'activo'
+                                                                            ? 'btn-disable'
+                                                                            : 'btn-enable' ?>"
+                                                    type="submit">
+                                                    <?= $alumno['estado'] === 'activo'
+                                                        ? 'Desactivar'
+                                                        : 'Activar' ?>
+                                                </button>
 
-        </form>
+                                            </form>
 
-    </div>
+                                        </div>
 
-</td>
+                                    </td>
 
                                 </tr>
 
@@ -444,6 +443,7 @@ $hoy = date('Y-m-d');
         </section>
 
     </main>
-
+    <?php require __DIR__ . '/../partials/mobile_nav.php'; ?>
 </body>
+
 </html>

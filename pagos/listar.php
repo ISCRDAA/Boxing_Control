@@ -6,6 +6,7 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../config/session.php';
 
 requerirSesion();
+$seccionActiva = 'pagos';
 
 $mensajeExito = $_SESSION['mensaje_exito'] ?? null;
 $mensajeError = $_SESSION['mensaje_error'] ?? null;
@@ -45,21 +46,29 @@ $sql = '
 $parametros = [];
 
 if ($busqueda !== '') {
+
     $sql .= '
         WHERE
-            alumnos.numero_alumno LIKE :busqueda
-            OR alumnos.nombres LIKE :busqueda
-            OR alumnos.apellidos LIKE :busqueda
+            alumnos.numero_alumno LIKE :busqueda_numero
+            OR alumnos.nombres LIKE :busqueda_nombres
+            OR alumnos.apellidos LIKE :busqueda_apellidos
             OR CONCAT(
                 alumnos.nombres,
                 " ",
                 alumnos.apellidos
-            ) LIKE :busqueda
-            OR pagos.concepto LIKE :busqueda
+            ) LIKE :busqueda_completa
+            OR pagos.concepto LIKE :busqueda_concepto
     ';
 
-    $parametros['busqueda'] =
-        '%' . $busqueda . '%';
+    $textoBusqueda = '%' . $busqueda . '%';
+
+    $parametros = [
+        'busqueda_numero' => $textoBusqueda,
+        'busqueda_nombres' => $textoBusqueda,
+        'busqueda_apellidos' => $textoBusqueda,
+        'busqueda_completa' => $textoBusqueda,
+        'busqueda_concepto' => $textoBusqueda,
+    ];
 }
 
 $sql .= '
@@ -82,30 +91,30 @@ foreach ($pagos as $pago) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        content="width=device-width, initial-scale=1.0">
 
     <title>Historial de pagos | Gym Box</title>
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/dashboard.css"
-    >
+        href="<?= BASE_URL ?>/css/dashboard.css">
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/alumnos.css"
-    >
+        href="<?= BASE_URL ?>/css/alumnos.css">
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/pagos.css"
-    >
+        href="<?= BASE_URL ?>/css/pagos.css">
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URL ?>/css/mobile.css">
 </head>
 
 <body>
@@ -119,8 +128,7 @@ foreach ($pagos as $pago) {
 
         <a
             class="btn-secondary"
-            href="<?= BASE_URL ?>/dashboard.php"
-        >
+            href="<?= BASE_URL ?>/dashboard.php">
             Volver al panel
         </a>
 
@@ -142,8 +150,7 @@ foreach ($pagos as $pago) {
 
                 <a
                     class="btn-primary"
-                    href="<?= BASE_URL ?>/pagos/crear.php"
-                >
+                    href="<?= BASE_URL ?>/pagos/crear.php">
                     Registrar pago
                 </a>
 
@@ -176,8 +183,7 @@ foreach ($pagos as $pago) {
             <form
                 class="search-form"
                 method="GET"
-                action="<?= BASE_URL ?>/pagos/listar.php"
-            >
+                action="<?= BASE_URL ?>/pagos/listar.php">
 
                 <input
                     class="form-control"
@@ -185,16 +191,14 @@ foreach ($pagos as $pago) {
                     name="q"
                     placeholder="Buscar alumno o concepto"
                     value="<?= htmlspecialchars(
-                        $busqueda,
-                        ENT_QUOTES,
-                        'UTF-8'
-                    ) ?>"
-                >
+                                $busqueda,
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>">
 
                 <button
                     class="btn-primary"
-                    type="submit"
-                >
+                    type="submit">
                     Buscar
                 </button>
 
@@ -202,8 +206,7 @@ foreach ($pagos as $pago) {
 
                     <a
                         class="btn-secondary"
-                        href="<?= BASE_URL ?>/pagos/listar.php"
-                    >
+                        href="<?= BASE_URL ?>/pagos/listar.php">
                         Limpiar
                     </a>
 
@@ -222,9 +225,9 @@ foreach ($pagos as $pago) {
                     <span>Total mostrado</span>
                     <strong>
                         $<?= number_format(
-                            $totalMostrado,
-                            2
-                        ) ?>
+                                $totalMostrado,
+                                2
+                            ) ?>
                     </strong>
                 </div>
 
@@ -280,12 +283,11 @@ foreach ($pagos as $pago) {
 
                                         <a
                                             class="student-link"
-                                            href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $pago['alumno_id'] ?>"
-                                        >
+                                            href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $pago['alumno_id'] ?>">
                                             <?= htmlspecialchars(
                                                 $pago['nombres']
-                                                . ' '
-                                                . $pago['apellidos'],
+                                                    . ' '
+                                                    . $pago['apellidos'],
                                                 ENT_QUOTES,
                                                 'UTF-8'
                                             ) ?>
@@ -314,9 +316,9 @@ foreach ($pagos as $pago) {
                                     <td data-label="Cantidad">
                                         <strong>
                                             $<?= number_format(
-                                                (float) $pago['monto'],
-                                                2
-                                            ) ?>
+                                                    (float) $pago['monto'],
+                                                    2
+                                                ) ?>
                                         </strong>
                                     </td>
 
@@ -372,6 +374,7 @@ foreach ($pagos as $pago) {
         </section>
 
     </main>
-
+    <?php require __DIR__ . '/../partials/mobile_nav.php'; ?>
 </body>
+
 </html>

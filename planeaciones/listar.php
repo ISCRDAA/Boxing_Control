@@ -6,6 +6,7 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../config/session.php';
 
 requerirSesion();
+$seccionActiva = 'planeaciones';
 
 $mensajeExito = $_SESSION['mensaje_exito'] ?? null;
 $mensajeError = $_SESSION['mensaje_error'] ?? null;
@@ -167,30 +168,30 @@ function claseEstadoPlaneacion(string $estado): string
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        content="width=device-width, initial-scale=1.0">
 
     <title>Planeaciones | Gym Box</title>
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/dashboard.css"
-    >
+        href="<?= BASE_URL ?>/css/dashboard.css">
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/alumnos.css"
-    >
+        href="<?= BASE_URL ?>/css/alumnos.css">
 
     <link
         rel="stylesheet"
-        href="<?= BASE_URL ?>/css/planeaciones.css"
-    >
+        href="<?= BASE_URL ?>/css/planeaciones.css">
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URL ?>/css/mobile.css">
 </head>
 
 <body>
@@ -204,8 +205,7 @@ function claseEstadoPlaneacion(string $estado): string
 
         <a
             class="btn-secondary"
-            href="<?= BASE_URL ?>/dashboard.php"
-        >
+            href="<?= BASE_URL ?>/dashboard.php">
             Volver al panel
         </a>
 
@@ -228,8 +228,7 @@ function claseEstadoPlaneacion(string $estado): string
 
                 <a
                     class="btn-primary"
-                    href="<?= BASE_URL ?>/planeaciones/crear.php"
-                >
+                    href="<?= BASE_URL ?>/planeaciones/crear.php">
                     Nueva planeación
                 </a>
 
@@ -298,8 +297,7 @@ function claseEstadoPlaneacion(string $estado): string
             <form
                 class="planning-filters"
                 method="GET"
-                action="<?= BASE_URL ?>/planeaciones/listar.php"
-            >
+                action="<?= BASE_URL ?>/planeaciones/listar.php">
 
                 <input
                     class="form-control"
@@ -307,23 +305,20 @@ function claseEstadoPlaneacion(string $estado): string
                     name="q"
                     placeholder="Buscar alumno, objetivo o planeación"
                     value="<?= htmlspecialchars(
-                        $busqueda,
-                        ENT_QUOTES,
-                        'UTF-8'
-                    ) ?>"
-                >
+                                $busqueda,
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>">
 
                 <select
                     class="form-control"
-                    name="estado"
-                >
+                    name="estado">
 
                     <option
                         value="todos"
                         <?= $estado === 'todos'
                             ? 'selected'
-                            : '' ?>
-                    >
+                            : '' ?>>
                         Todos los estados
                     </option>
 
@@ -331,8 +326,7 @@ function claseEstadoPlaneacion(string $estado): string
                         value="borrador"
                         <?= $estado === 'borrador'
                             ? 'selected'
-                            : '' ?>
-                    >
+                            : '' ?>>
                         Borradores
                     </option>
 
@@ -340,8 +334,7 @@ function claseEstadoPlaneacion(string $estado): string
                         value="activa"
                         <?= $estado === 'activa'
                             ? 'selected'
-                            : '' ?>
-                    >
+                            : '' ?>>
                         Activas
                     </option>
 
@@ -349,8 +342,7 @@ function claseEstadoPlaneacion(string $estado): string
                         value="terminada"
                         <?= $estado === 'terminada'
                             ? 'selected'
-                            : '' ?>
-                    >
+                            : '' ?>>
                         Terminadas
                     </option>
 
@@ -358,8 +350,7 @@ function claseEstadoPlaneacion(string $estado): string
                         value="cancelada"
                         <?= $estado === 'cancelada'
                             ? 'selected'
-                            : '' ?>
-                    >
+                            : '' ?>>
                         Canceladas
                     </option>
 
@@ -367,8 +358,7 @@ function claseEstadoPlaneacion(string $estado): string
 
                 <button
                     class="btn-primary"
-                    type="submit"
-                >
+                    type="submit">
                     Buscar
                 </button>
 
@@ -379,8 +369,7 @@ function claseEstadoPlaneacion(string $estado): string
 
                     <a
                         class="btn-secondary"
-                        href="<?= BASE_URL ?>/planeaciones/listar.php"
-                    >
+                        href="<?= BASE_URL ?>/planeaciones/listar.php">
                         Limpiar
                     </a>
 
@@ -419,9 +408,8 @@ function claseEstadoPlaneacion(string $estado): string
 
                                     <span
                                         class="badge <?= claseEstadoPlaneacion(
-                                            $planeacion['estado']
-                                        ) ?>"
-                                    >
+                                                            $planeacion['estado']
+                                                        ) ?>">
                                         <?= htmlspecialchars(
                                             ucfirst(
                                                 $planeacion['estado']
@@ -443,8 +431,7 @@ function claseEstadoPlaneacion(string $estado): string
 
                                 <a
                                     class="btn-small btn-view"
-                                    href="<?= BASE_URL ?>/planeaciones/ver.php?id=<?= (int) $planeacion['id'] ?>"
-                                >
+                                    href="<?= BASE_URL ?>/planeaciones/ver.php?id=<?= (int) $planeacion['id'] ?>">
                                     Abrir
                                 </a>
 
@@ -453,12 +440,11 @@ function claseEstadoPlaneacion(string $estado): string
                             <div class="planning-student">
 
                                 <a
-                                    href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $planeacion['alumno_id'] ?>"
-                                >
+                                    href="<?= BASE_URL ?>/alumnos/ver.php?id=<?= (int) $planeacion['alumno_id'] ?>">
                                     <?= htmlspecialchars(
                                         $planeacion['nombres']
-                                        . ' '
-                                        . $planeacion['apellidos'],
+                                            . ' '
+                                            . $planeacion['apellidos'],
                                         ENT_QUOTES,
                                         'UTF-8'
                                     ) ?>
@@ -477,7 +463,7 @@ function claseEstadoPlaneacion(string $estado): string
                             <p class="planning-objective">
                                 <?= htmlspecialchars(
                                     $planeacion['objetivo']
-                                    ?: 'Sin objetivo registrado.',
+                                        ?: 'Sin objetivo registrado.',
                                     ENT_QUOTES,
                                     'UTF-8'
                                 ) ?>
@@ -535,6 +521,7 @@ function claseEstadoPlaneacion(string $estado): string
         </section>
 
     </main>
-
+    <?php require __DIR__ . '/../partials/mobile_nav.php'; ?>
 </body>
+
 </html>

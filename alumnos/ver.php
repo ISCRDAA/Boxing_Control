@@ -6,6 +6,7 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../config/session.php';
 
 requerirSesion();
+$seccionActiva = 'alumnos';
 
 /*
 |--------------------------------------------------------------------------
@@ -255,6 +256,9 @@ if (!empty($alumno['proximo_pago'])) {
     <link
         rel="stylesheet"
         href="<?= BASE_URL ?>/css/alumnos.css">
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URL ?>/css/mobile.css">
 </head>
 
 <body>
@@ -862,7 +866,7 @@ if (!empty($alumno['proximo_pago'])) {
         </section>
 
     </main>
-
+    <?php require __DIR__ . '/../partials/mobile_nav.php'; ?>
 </body>
 
 </html>

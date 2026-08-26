@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/config/session.php';
 
 requerirSesion();
+$seccionActiva = 'inicio';
 
 $usuario = usuarioActual();
 
@@ -24,6 +25,9 @@ $usuario = usuarioActual();
     <link
         rel="stylesheet"
         href="<?= BASE_URL ?>/css/dashboard.css">
+    <link
+        rel="stylesheet"
+        href="<?= BASE_URL ?>/css/mobile.css">
 </head>
 
 <body>
@@ -98,45 +102,80 @@ $usuario = usuarioActual();
                 pagos, asistencias y planeaciones.
             </p>
 
-            <div class="dashboard-actions">
+            <section class="mobile-app-menu">
 
                 <a
-                    class="dashboard-link"
+                    class="app-menu-card"
                     href="<?= BASE_URL ?>/alumnos/listar.php">
-                    Gestionar alumnos
+                    <span class="app-menu-icon">
+                        ♙
+                    </span>
+
+                    <div>
+                        <strong>Alumnos</strong>
+                        <span>Expedientes y datos</span>
+                    </div>
                 </a>
 
                 <a
-                    class="dashboard-link"
-                    href="<?= BASE_URL ?>/pagos/listar.php">
-                    Gestionar pagos
-                </a>
-                <a
-                    class="dashboard-link"
+                    class="app-menu-card"
                     href="<?= BASE_URL ?>/asistencias/listar.php">
-                    Registrar asistencias
+                    <span class="app-menu-icon">
+                        ✓
+                    </span>
+
+                    <div>
+                        <strong>Asistencia</strong>
+                        <span>Registrar llegadas</span>
+                    </div>
                 </a>
 
                 <a
-                    class="dashboard-link"
-                    href="<?= BASE_URL ?>/ejercicios/listar.php">
-                    Catálogo de ejercicios
+                    class="app-menu-card"
+                    href="<?= BASE_URL ?>/pagos/listar.php">
+                    <span class="app-menu-icon">
+                        $
+                    </span>
+
+                    <div>
+                        <strong>Pagos</strong>
+                        <span>Cobros e historial</span>
+                    </div>
                 </a>
 
                 <a
-                    class="dashboard-link"
+                    class="app-menu-card"
                     href="<?= BASE_URL ?>/planeaciones/listar.php">
-                    Planeaciones
+                    <span class="app-menu-icon">
+                        ≡
+                    </span>
+
+                    <div>
+                        <strong>Planeaciones</strong>
+                        <span>Rutinas personalizadas</span>
+                    </div>
                 </a>
 
+                <a
+                    class="app-menu-card"
+                    href="<?= BASE_URL ?>/ejercicios/listar.php">
+                    <span class="app-menu-icon">
+                        +
+                    </span>
 
-            </div>
+                    <div>
+                        <strong>Ejercicios</strong>
+                        <span>Catálogo del gimnasio</span>
+                    </div>
+                </a>
+
+            </section>
 
 
         </section>
 
     </main>
-
+    <?php require __DIR__ . '/partials/mobile_nav.php'; ?>
 </body>
 
 </html>
