@@ -27,6 +27,8 @@ unset($_SESSION['mensaje_error']);
         rel="stylesheet"
         href="<?= BASE_URL ?>/css/login.css"
     >
+
+    <?php require __DIR__ . '/partials/pwa_head.php'; ?>
 </head>
 
 <body>
@@ -116,6 +118,6 @@ unset($_SESSION['mensaje_error']);
         </footer>
 
     </main>
-
+<script src="<?= BASE_URL ?>/js/pwa.js"></script>
 </body>
 </html>

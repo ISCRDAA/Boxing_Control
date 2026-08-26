@@ -28,6 +28,8 @@ $usuario = usuarioActual();
     <link
         rel="stylesheet"
         href="<?= BASE_URL ?>/css/mobile.css">
+
+        <?php require __DIR__ . '/partials/pwa_head.php'; ?>
 </head>
 
 <body>
@@ -176,6 +178,7 @@ $usuario = usuarioActual();
 
     </main>
     <?php require __DIR__ . '/partials/mobile_nav.php'; ?>
+    <script src="<?= BASE_URL ?>/js/pwa.js"></script>
 </body>
 
 </html>

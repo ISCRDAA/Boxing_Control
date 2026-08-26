@@ -1,0 +1,43 @@
+{
+    "name": "Boxing Control",
+    "short_name": "Boxing",
+    "description": "Sistema de administración y entrenamiento para gimnasio de boxeo",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#111827",
+    "theme_color": "#111827",
+    "lang": "es-MX",
+    "icons": [
+        {
+            "src": "/icons/icon-192.jpg",
+            "sizes": "192x192",
+            "type": "image/jpg",
+            "purpose": "any"
+        },
+        {
+            "src": "/icons/icon-512.jpg",
+            "sizes": "512x512",
+            "type": "image/jpg",
+            "purpose": "any"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Alumnos",
+            "short_name": "Alumnos",
+            "url": "/alumnos/listar.php"
+        },
+        {
+            "name": "Asistencias",
+            "short_name": "Asistencia",
+            "url": "/asistencias/listar.php"
+        },
+        {
+            "name": "Planeaciones",
+            "short_name": "Planes",
+            "url": "/planeaciones/listar.php"
+        }
+    ]
+}
